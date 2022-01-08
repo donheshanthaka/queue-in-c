@@ -1,55 +1,56 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define MAX_SIZE 101
 
-int a[MAX_SIZE];
-int front = -1;
-int rear = -1;
+struct node{
+    int data;
+    struct node *link;
+};
 
-void push(int x){
-    if(((rear+1) % MAX_SIZE) == front){
-        printf("Error: Queue is full!");
-        return;
-    }else if (front == -1 && rear == -1){ // To check whether Queue is empty or not
-        front = 0;
-        rear = 0;
+struct node *front = NULL;
+struct node *rear = NULL;
 
-    }else{
-        rear = (rear + 1) % MAX_SIZE; // this line of code helps the function to loop through the array, after the last index, it will return back to 0
+void enqueue(int data){
+    struct node *temp = malloc(sizeof(struct node));
+    temp->data = data;
+    temp->link = NULL;
+    if(front == NULL){
+        front  = temp;
+        rear = temp;
     }
-    a[rear] = x;
-
+    rear->link = temp;
+    rear = temp;
 }
 
-void pop(){
-    if (front == -1 && rear == -1){
-        printf("Error: The stack is empty!\n");
+void dequeue(){ // deleting the front(head) node
+    if (front == NULL){
+        printf("Error: The queue is empty!\n");
         return;
-    }else if( front == rear){ // when removing the last remaining element from the list
-        a[front] = NULL;
-        front = -1;
-        rear = -1;
-    }else{
-        front = (front+1) % MAX_SIZE;
     }
+    struct node *temp = front;
+    front = front->link;
+    free(temp);
+    temp = NULL;
 }
 
-int returnfront(){
-    if(front == -1){
-        printf("Error: The stack is empty!\n");
-        return -1;
+struct node *returnfront(){
+    if(front == NULL){
+        printf("Error: The queue is empty!\n");
+        return;
     }
-    return a[front];
+    return front;
 }
 
 void print(){
+    if(front == NULL){
+        printf("Error: The queue is empty!\n");
+        return;
+    }
+    struct node *temp = front;
     printf("\nQueue: ");
-    // Finding number of elements in queue
-    int count = (rear+MAX_SIZE-front)%MAX_SIZE + 1;
-    for (int i = 0; i < count; i++){
-        int index = (front + i) % MAX_SIZE;
-        printf("%d -> ", a[index]);
+    while(temp != NULL){
+        printf(" <- %d", temp->data);
+        temp = temp->link;
     }
     printf("\n");
 }
@@ -57,22 +58,22 @@ void print(){
 
 int main()
 {
-    pop();
+    dequeue();
 
-    push(1);
-    push(2);
-    push(3);
-    push(4);
-    push(5);
-    push(6);
+    enqueue(1);
+    enqueue(2);
+    enqueue(3);
+    enqueue(4);
+    enqueue(5);
+    enqueue(6);
 
     print();
 
-    printf("\nfront: %d\n", returnfront());
+    printf("\nFront: %d\n", returnfront()->data);
 
-    pop();
+    dequeue();
 
-    push(7);
+    enqueue(7);
 
     print();
 
