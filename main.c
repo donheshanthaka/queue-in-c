@@ -7,7 +7,7 @@ int a[MAX_SIZE];
 int front = -1;
 int rear = -1;
 
-void push(int x){
+void enqueue(int x){
     if(((rear+1) % MAX_SIZE) == front){
         printf("Error: Queue is full!");
         return;
@@ -22,9 +22,9 @@ void push(int x){
 
 }
 
-void pop(){
+void dequeue(){
     if (front == -1 && rear == -1){
-        printf("Error: The stack is empty!\n");
+        printf("Error: The queue is empty!\n");
         return;
     }else if( front == rear){ // when removing the last remaining element from the list
         a[front] = NULL;
@@ -37,7 +37,7 @@ void pop(){
 
 int returnfront(){
     if(front == -1){
-        printf("Error: The stack is empty!\n");
+        printf("Error: The queue is empty!\n");
         return -1;
     }
     return a[front];
@@ -49,7 +49,7 @@ void print(){
     int count = (rear+MAX_SIZE-front)%MAX_SIZE + 1;
     for (int i = 0; i < count; i++){
         int index = (front + i) % MAX_SIZE;
-        printf("%d -> ", a[index]);
+        printf("<- %d ", a[index]);
     }
     printf("\n");
 }
@@ -57,22 +57,22 @@ void print(){
 
 int main()
 {
-    pop();
+    dequeue();
 
-    push(1);
-    push(2);
-    push(3);
-    push(4);
-    push(5);
-    push(6);
+    enqueue(1);
+    enqueue(2);
+    enqueue(3);
+    enqueue(4);
+    enqueue(5);
+    enqueue(6);
 
     print();
 
-    printf("\nfront: %d\n", returnfront());
+    printf("\nFront: %d\n", returnfront());
 
-    pop();
+    dequeue();
 
-    push(7);
+    enqueue(7);
 
     print();
 
